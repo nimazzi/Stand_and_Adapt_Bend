@@ -28,7 +28,7 @@ where the variable ![img12](https://latex.codecogs.com/gif.latex?x%5E%7Binst%7D_
 
 We consider three possible sources of uncertainty, i.e., ![img23](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i), ![img24](https://latex.codecogs.com/gif.latex?c%5E%7B%5Cmathrm%7Bco%7D_2%7D_i), and ![img25](https://latex.codecogs.com/gif.latex?c%5E%7Bnucl%7D_i). Each uncertain parameters has 3 possible outcomes in 5 years, each of which is linked to 3 additional possible outcomes in 10 years. The result is 9 possible trajectories for each uncertainty, all with the same probability. We consider 4 different cases of the investment problem. Case 1 is the deterministic version, where ![img26](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i), ![img27](https://latex.codecogs.com/gif.latex?c%5E%7B%5Cmathrm%7Bco%7D_2%7D_i), and ![img28](https://latex.codecogs.com/gif.latex?c%5E%7Bnucl%7D_i) are deterministic parameters (weighted average of the scenarios). Then, case 2 has 1 uncertain parameter, case 3 has 2 uncertain parameters, and case 4 has 3 uncertain parameters.
 
-| ![tt3](https://latex.codecogs.com/gif.latex?%5Ctext%7Bcase%7D) |  ![tt2](https://latex.codecogs.com/gif.latex?%7C%5Cmathcal%7BI%7D%7C)  |
+| ![tt1](https://latex.codecogs.com/gif.latex?%5Cmathrm%7Bcase%7D) |  ![tt2](https://latex.codecogs.com/gif.latex?%7C%5Cmathcal%7BI%7D%7C)  |
 |:----:|:---:|
 |   1  |  3  |
 |   2  |  13 |
