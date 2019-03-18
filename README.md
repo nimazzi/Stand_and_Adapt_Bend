@@ -3,7 +3,7 @@
 ## About
 
 We formulate the stochastic investment planning problem as
-$$ \alpha = \beta $$
+$ \alpha = \beta $
 
 ## Prerequisites
 
