@@ -2,7 +2,7 @@
 
 ## Brief Description
 
-This code solves a power system investment planning problem with a time horizon of 15 years. The deterministic version of the problem has 3 decision nodes: one refers to decisions to be taken at present time, one to decisions in 5 years time, and one to decision in 10 years time. The stochastic version is obtained by modeling different possible scenarios for the future of the system in 5 and 10 years. At each node we also compute the cost of operating the system for the following 5 years for given installed capacity. We consider a construction time of 5 years, so new assets installed at present time will only be available in 5 and 10 years, and new capacity installed in 5 years will only be available in 10 years. We model a set $\mathcal{P}$ of technologies: six thermal units, three storage units, and three renewable generation units.
+This code solves a power system investment planning problem with a time horizon of 15 years. The deterministic version of the problem has 3 decision nodes: one refers to decisions to be taken at present time, one to decisions in 5 years time, and one to decision in 10 years time. The stochastic version is obtained by modeling different possible scenarios for the future of the system in 5 and 10 years. At each node we also compute the cost of operating the system for the following 5 years for given installed capacity. We consider a construction time of 5 years, so new assets installed at present time will only be available in 5 and 10 years, and new capacity installed in 5 years will only be available in 10 years. We model a set ![img1](https://latex.codecogs.com/gif.latex?%5Cmathcal%7BP%7D) of technologies: six thermal units, three storage units, and three renewable generation units.
 
 The stochastic investment planning problem is formulated as
 
@@ -12,7 +12,13 @@ where ![eq2](https://latex.codecogs.com/gif.latex?%5Cmathcal%7BI%7D) is the set 
 
 ![eq4](https://latex.codecogs.com/gif.latex?g%28x_i%2Cc_i%29%20%3D%20%5Cunderset%7By_i%20%5Cin%20%5Cmathcal%7BY%7D%7D%7B%5Ctext%7Bmin%7D%7D%5C%7B%20c_i%5E%5Ctop%20%5Chspace%7B-2pt%7D%20C%20y_i%20%5Chspace%7B2pt%7D%20%7C%20%5Chspace%7B2pt%7D%20A%20y_i%20%5Cleq%20B%20x_i%20%5C%7D%2C%20%5Cquad%20%5Cforall%20i%20%5Cin%20%5Cmathcal%7BI%7D)
 
-gives the cost of operating the system over 5 years. The vector of right-hand side coefficients ![eq5](https://latex.codecogs.com/gif.latex?x_i) is given by 
+gives the cost of operating the system over 5 years. The vector of right-hand side coefficients ![img2](https://latex.codecogs.com/gif.latex?x_i) is given by 
+
+![eq5](https://latex.codecogs.com/gif.latex?x_i%20%3D%20%5Cleft%28%5Cleft%5C%7Bx%5E%7Bacc%7D_%7Bpi%7D%2C%20%5Cforall%20p%20%5Cin%20%5Cmathcal%7BP%7D%5Cright%5C%7D%2C-%5Cnu%5E%7BD%7D_i%2C%5Cnu%5E%7BE%7D_i%5Cright%29%2C%20%5Cquad%20%5Cforall%20i%20%5Cin%20%5Cmathcal%7BI%7D)
+
+here ![img3](https://latex.codecogs.com/gif.latex?x%5E%7Bacc%7D_%7Bpi%7D) is the accumulated capacity of technology ![img4](https://latex.codecogs.com/gif.latex?p) at node ![img5](https://latex.codecogs.com/gif.latex?i). Parameters ![img6](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BD%7D_i) and ![img7](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i) are the relative level of energy demand and the yearly CO2 emission limit, respectively.
+
+
 
 
 
