@@ -2,15 +2,21 @@
 
 ## Brief Description
 
-This code solves stochastic investment planning problems like
+This code solves a power system investment planning problem with a time horizon of 15 years. The deterministic version of the problem has 3 decision nodes: one refers to decisions to be taken at present time, one to decisions in 5 years time, and one to decision in 10 years time. The stochastic version is obtained by modeling different possible scenarios for the future of the system in 5 and 10 years. At each node we also compute the cost of operating the system for the following 5 years for given installed capacity. We consider a construction time of 5 years, so new assets installed at present time will only be available in 5 and 10 years, and new capacity installed in 5 years will only be available in 10 years. We model a set $\mathcal{P}$ of technologies: six thermal units, three storage units, and three renewable generation units.
+
+The stochastic investment planning problem is formulated as
 
 ![eq1](https://latex.codecogs.com/gif.latex?%5Cunderset%7B%5Cmathbf%7Bx%7D%20%5Cin%20%5Cmathcal%7BX%7D%7D%7B%5Ctext%7Bmin%7D%7D%20%5C%3B%20f%28%5Cmathbf%7Bx%7D%29%20&plus;%20%5Csum_%7Bi%20%5Cin%20%5Cmathcal%7BI%7D%7D%20%5Cpi_i%20%5Chspace%7B1pt%7D%20g%28x_i%2Cc_i%29%2C)
 
-where ![eq2](https://latex.codecogs.com/gif.latex?f%28%5Cmathbf%7Bx%7D%29) yields the expected total investment and fixed cost, ![eq3](https://latex.codecogs.com/gif.latex?%5Cmathcal%7BI%7D) is the set of decision nodes, ![eq4](https://latex.codecogs.com/gif.latex?%5Cpi_i) is the probability associated to node ![eq5](https://latex.codecogs.com/gif.latex?i). Function ![eq6](https://latex.codecogs.com/gif.latex?g%28x_i%2Cc_i%29) gives the cost gives the cost of operating the system over 5 years, and is formulated as
+where ![eq2](https://latex.codecogs.com/gif.latex?%5Cmathcal%7BI%7D) is the set of decision nodes, each associated with a probability ![eq3](https://latex.codecogs.com/gif.latex?%5Cpi_i). The function 
 
-![eq7](https://latex.codecogs.com/gif.latex?g%28x_i%2Cc_i%29%20%3D%20%5Cunderset%7By_i%20%5Cin%20%5Cmathcal%7BY%7D%7D%7B%5Ctext%7Bmin%7D%7D%5C%7B%20c_i%5E%5Ctop%20%5Chspace%7B-2pt%7D%20C%20y_i%20%5Chspace%7B2pt%7D%20%7C%20%5Chspace%7B2pt%7D%20A%20y_i%20%5Cleq%20B%20x_i%20%5C%7D%2C%20%5Cquad%20%5Cforall%20i%20%5Cin%20%5Cmathcal%7BI%7D)
+![eq4](https://latex.codecogs.com/gif.latex?g%28x_i%2Cc_i%29%20%3D%20%5Cunderset%7By_i%20%5Cin%20%5Cmathcal%7BY%7D%7D%7B%5Ctext%7Bmin%7D%7D%5C%7B%20c_i%5E%5Ctop%20%5Chspace%7B-2pt%7D%20C%20y_i%20%5Chspace%7B2pt%7D%20%7C%20%5Chspace%7B2pt%7D%20A%20y_i%20%5Cleq%20B%20x_i%20%5C%7D%2C%20%5Cquad%20%5Cforall%20i%20%5Cin%20%5Cmathcal%7BI%7D)
 
-Each subproblem ![eq6](https://latex.codecogs.com/gif.latex?g%28x_i%2Cc_i%29) is an LP problem with ![img1](https://latex.codecogs.com/gif.latex?2.72%20%5Ctimes%2010%5E5) constraints and ![img2](https://latex.codecogs.com/gif.latex?1.40%20%5Ctimes%2010%5E5) variables.
+gives the cost of operating the system over 5 years. The vector of right-hand side coefficients ![eq5](https://latex.codecogs.com/gif.latex?x_i) is given by 
+
+
+
+
 
 ## Prerequisites
 
