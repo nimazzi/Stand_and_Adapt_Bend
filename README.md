@@ -10,6 +10,8 @@ where ![eq2](https://latex.codecogs.com/gif.latex?f%28%5Cmathbf%7Bx%7D%29) yield
 
 ![eq7](https://latex.codecogs.com/gif.latex?g%28x_i%2Cc_i%29%20%3D%20%5Cunderset%7By_i%20%5Cin%20%5Cmathcal%7BY%7D%7D%7B%5Ctext%7Bmin%7D%7D%5C%7B%20c_i%5E%5Ctop%20%5Chspace%7B-2pt%7D%20C%20y_i%20%5Chspace%7B2pt%7D%20%7C%20%5Chspace%7B2pt%7D%20A%20y_i%20%5Cleq%20B%20x_i%20%5C%7D%2C%20%5Cquad%20%5Cforall%20i%20%5Cin%20%5Cmathcal%7BI%7D)
 
+Each subproblem ![eq6](https://latex.codecogs.com/gif.latex?g%28x_i%2Cc_i%29) is an LP problem with ![img1](https://latex.codecogs.com/gif.latex?2.72%20%5Ctimes%2010%5E5) constraints and ![img2](https://latex.codecogs.com/gif.latex?1.40%20%5Ctimes%2010%5E5) variables.
+
 ## Prerequisites
 
 Install [Julia 1.0](https://julialang.org/downloads/) (with packages [JuMP 0.18](https://github.com/JuliaOpt/JuMP.jl), [Gurobi 0.5](https://github.com/JuliaOpt/Gurobi.jl), [JLD2 0.1](https://github.com/JuliaIO/JLD2.jl), [CSV 0.4](https://github.com/JuliaData/CSV.jl)) and [Gurobi 7.5](http://www.gurobi.com/downloads/gurobi-optimizer). 
