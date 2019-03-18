@@ -4,7 +4,7 @@
 
 This code solves stochastic investment planning problems like
 
-![eq1](https://latex.codecogs.com/gif.latex?%5Cmin_%7B%5Cmathbf%7Bx%7D%20%5Cin%20%5Cmathcal%7BX%7D%7D%20f%28%5Cmathbf%7Bx%7D%29%20&plus;%20%5Csum_%7Bi%20%5Cin%20%5Cmathcal%7BI%7D%7D%20g%28x_i%2Cc_i%29)
+![eq1](https://latex.codecogs.com/gif.latex?%5Cunderset%7B%5Cmathbf%7Bx%7D%20%5Cin%20%5Cmathcal%7BX%7D%7D%7B%5Ctext%7Bmin%7D%7D%20%5C%3B%20f%28%5Cmathbf%7Bx%7D%29%20&plus;%20%5Csum_%7Bi%20%5Cin%20%5Cmathcal%7BI%7D%7D%20%5Cpi_i%20%5Chspace%7B1pt%7D%20g%28x_i%2Cc_i%29%2C)
 
 where ![eq2](https://latex.codecogs.com/gif.latex?f%28%5Cmathbf%7Bx%7D%29) yields the expected total investment and fixed cost, ![eq3](https://latex.codecogs.com/gif.latex?%5Cmathcal%7BI%7D) is the set of decision nodes, ![eq4](https://latex.codecogs.com/gif.latex?%5Cpi_i) is the probability associated to node ![eq5](https://latex.codecogs.com/gif.latex?i). Function ![eq6](https://latex.codecogs.com/gif.latex?g%28x_i%2Cc_i%29) gives the cost gives the cost of operating the system over 5 years, and is formulated as
 
