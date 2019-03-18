@@ -18,7 +18,15 @@ gives the cost of operating the system over 5 years. The vector of right-hand si
 
 here ![img3](https://latex.codecogs.com/gif.latex?x%5E%7Bacc%7D_%7Bpi%7D) is the accumulated capacity of technology ![img4](https://latex.codecogs.com/gif.latex?p) at node ![img5](https://latex.codecogs.com/gif.latex?i). Parameters ![img6](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BD%7D_i) and ![img7](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i) are the relative level of energy demand and the yearly CO2 emission limit, respectively.
 
+The vector of cost coefficients ![img8](https://latex.codecogs.com/gif.latex?c_i) is
 
+![eq6](https://latex.codecogs.com/gif.latex?c_i%20%3D%20%28c%5E%7Bnucl%7D_i%2Cc%5E%7B%5Cmathrm%7Bco%7D_2%7D_i%29%2C%20%5Cquad%20%5Cforall%20i%20%5Cin%20%5Cmathcal%7BI%7D%2C)
+
+where ![img9](https://latex.codecogs.com/gif.latex?c%5E%7Bnucl%7D_i) is the uranium fuel price and ![img10](https://latex.codecogs.com/gif.latex?c%5E%7B%5Cmathrm%7Bco%7D_2%7D_i) the CO2 emission price. Finally, the function ![img11](https://latex.codecogs.com/gif.latex?f%28%5Cmathbf%7Bx%7D%29) yields the expected total investment and fixed cost, and it is computed as
+
+![eq7](https://latex.codecogs.com/gif.latex?f%28%5Cmathbf%7Bx%7D%29%20%3D%20%5Csum_%7Bi%20%5Cin%20%5Cmathcal%7BI%7D%7D%20%5Cpi_%7Bi%7D%20%5Csum_%7Bp%20%5Cin%20%5Cmathcal%7BP%7D%7D%20%5Cleft%28%20c%5E%7Binv%7D_%7Bpi%7D%20x%5E%7Binst%7D_%7Bpi%7D%20&plus;%20c%5E%7Bfix%7D_%7Bpi%7D%20x%5E%7Bacc%7D_%7Bpi%7D%5Cright%29%2C)
+
+where the variable ![img12](https://latex.codecogs.com/gif.latex?x%5E%7Binst%7D_%7Bpi%7D) is the newly installed capacity of technology ![img13](https://latex.codecogs.com/gif.latex?p) at node ![img14](https://latex.codecogs.com/gif.latex?i). Parameters ![img14](https://latex.codecogs.com/gif.latex?c%5E%7Binv%7D_%7Bpi%7D) and ![img15](https://latex.codecogs.com/gif.latex?c%5E%7Bfix%7D_%7Bpi%7D) are the unitary investment and fixed cost of technology ![img16](https://latex.codecogs.com/gif.latex?p) at node ![img14](https://latex.codecogs.com/gif.latex?i). Parameters ![img17](https://latex.codecogs.com/gif.latex?c%5E%7Binv%7D_%7Bpi%7D). The accumulated capacity ![img18](https://latex.codecogs.com/gif.latex?x%5E%7Bacc%7D_%7Bpi%7D) at node ![img19](https://latex.codecogs.com/gif.latex?i) is computed as the sum of the historical capacity ![img20](https://latex.codecogs.com/gif.latex?x%5E%7Bhist%7D_%7Bpi%7D%24) and the newly installed capacity ![img21](https://latex.codecogs.com/gif.latex?x%5E%7Binst%7D_%7Bpi%27%7D) in all nodes ![img22](https://latex.codecogs.com/gif.latex?i%27) ancestors to ![img23](https://latex.codecogs.com/gif.latex?i).
 
 
 
