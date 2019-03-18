@@ -16,9 +16,7 @@ gives the cost of operating the system over 5 years. The vector of right-hand si
 
 ![eq5](https://latex.codecogs.com/gif.latex?x_i%20%3D%20%5Cleft%28%5Cleft%5C%7Bx%5E%7Bacc%7D_%7Bpi%7D%2C%20%5Cforall%20p%20%5Cin%20%5Cmathcal%7BP%7D%5Cright%5C%7D%2C-%5Cnu%5E%7BD%7D_i%2C%5Cnu%5E%7BE%7D_i%5Cright%29%2C%20%5Cquad%20%5Cforall%20i%20%5Cin%20%5Cmathcal%7BI%7D)
 
-here ![img3](https://latex.codecogs.com/gif.latex?x%5E%7Bacc%7D_%7Bpi%7D) is the accumulated capacity of technology ![img4](https://latex.codecogs.com/gif.latex?p) at node ![img5](https://latex.codecogs.com/gif.latex?i). Parameters ![img6](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BD%7D_i) and ![img7](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i) are the relative level of energy demand and the yearly CO2 emission limit, respectively.
-
-The vector of cost coefficients ![img8](https://latex.codecogs.com/gif.latex?c_i) is
+here ![img3](https://latex.codecogs.com/gif.latex?x%5E%7Bacc%7D_%7Bpi%7D) is the accumulated capacity of technology ![img4](https://latex.codecogs.com/gif.latex?p) at node ![img5](https://latex.codecogs.com/gif.latex?i). Parameters ![img6](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BD%7D_i) and ![img7](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i) are the relative level of energy demand and the yearly CO2 emission limit, respectively. The vector of cost coefficients ![img8](https://latex.codecogs.com/gif.latex?c_i) is
 
 ![eq6](https://latex.codecogs.com/gif.latex?c_i%20%3D%20%28c%5E%7Bnucl%7D_i%2Cc%5E%7B%5Cmathrm%7Bco%7D_2%7D_i%29%2C%20%5Cquad%20%5Cforall%20i%20%5Cin%20%5Cmathcal%7BI%7D%2C)
 
@@ -28,9 +26,7 @@ where ![img9](https://latex.codecogs.com/gif.latex?c%5E%7Bnucl%7D_i) is the uran
 
 where the variable ![img12](https://latex.codecogs.com/gif.latex?x%5E%7Binst%7D_%7Bpi%7D) is the newly installed capacity of technology ![img13](https://latex.codecogs.com/gif.latex?p) at node ![img14](https://latex.codecogs.com/gif.latex?i). Parameters ![img14](https://latex.codecogs.com/gif.latex?c%5E%7Binv%7D_%7Bpi%7D) and ![img15](https://latex.codecogs.com/gif.latex?c%5E%7Bfix%7D_%7Bpi%7D) are the unitary investment and fixed cost of technology ![img16](https://latex.codecogs.com/gif.latex?p) at node ![img14](https://latex.codecogs.com/gif.latex?i). Parameters ![img17](https://latex.codecogs.com/gif.latex?c%5E%7Binv%7D_%7Bpi%7D). The accumulated capacity ![img18](https://latex.codecogs.com/gif.latex?x%5E%7Bacc%7D_%7Bpi%7D) at node ![img19](https://latex.codecogs.com/gif.latex?i) is computed as the sum of the historical capacity ![img20](https://latex.codecogs.com/gif.latex?x%5E%7Bhist%7D_%7Bpi%7D%24) and the newly installed capacity ![img21](https://latex.codecogs.com/gif.latex?x%5E%7Binst%7D_%7Bpi%27%7D) in all nodes ![img22](https://latex.codecogs.com/gif.latex?i%27) ancestors to ![img23](https://latex.codecogs.com/gif.latex?i).
 
-
-
-
+We consider three possible sources of uncertainty, i.e., ![img23](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i), ![img24](https://latex.codecogs.com/gif.latex?c%5E%7B%5Cmathrm%7Bco%7D_2%7D_i), and ![img25](https://latex.codecogs.com/gif.latex?c%5E%7Bnucl%7D_i). Each uncertain parameters has 3 possible outcomes in 5 years, each of which is linked to 3 additional possible outcomes in 10 years. The result is 9 possible trajectories for each uncertainty, all with the same probability. We consider 4 different cases of the investment problem. Case 1 is the deterministic version, where ![img26](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i), ![img27](https://latex.codecogs.com/gif.latex?c%5E%7B%5Cmathrm%7Bco%7D_2%7D_i), and ![img28](https://latex.codecogs.com/gif.latex?c%5E%7Bnucl%7D_i) are deterministic parameters (weighted average of the scenarios). Then, case 2 has 1 uncertain parameter (![img29](https://latex.codecogs.com/gif.latex?c%5E%7Bnucl%7D_i)), case 3 has 2 uncertain parameters (![img30](https://latex.codecogs.com/gif.latex?c%5E%7Bnucl%7D_i) and ![img31](https://latex.codecogs.com/gif.latex?c%5E%7B%5Cmathrm%7Bco%7D_2%7D_i), and case 4 has 3 uncertain parameters (![img32](https://latex.codecogs.com/gif.latex?c%5E%7Bnucl%7D_i), ![img33](https://latex.codecogs.com/gif.latex?c%5E%7B%5Cmathrm%7Bco%7D_2%7D_i), and ![img34](https://latex.codecogs.com/gif.latex?c%5E%7Bnucl%7D_i). 
 
 ## Prerequisites
 
