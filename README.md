@@ -32,7 +32,7 @@ We consider three possible sources of uncertainty, i.e., ![img23](https://latex.
   ![tt2](https://latex.codecogs.com/gif.latex?%7C%5Cmathcal%7BI%7D%7C) | 
   ![tt3](https://latex.codecogs.com/gif.latex?%5Cmathrm%7Buncertain%5C%3Bparameters%7D) |
 |:----:|:---:|:--:|
-|   1  |  3  |    |
+|   1  |  3  |  - |
 |   2  |  13 | ![a1](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i) |
 |   3  |  91 | ![a2](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i%2Cc%5E%7B%5Cmathrm%7Bco%7D_2%7D_i) |
 |   4  | 757 | ![a3](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i%2Cc%5E%7B%5Cmathrm%7Bco%7D_2%7D_i%2Cc%5E%7Bnucl%7D_i)|
