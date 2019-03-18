@@ -1,6 +1,6 @@
 # investment planning
 
-## About
+## Brief Description
 
 This code solves stochastic investment planning problems like
 
