@@ -3,6 +3,7 @@
 ## About
 
 We formulate the stochastic investment planning problem as
+
 ![eq1](https://latex.codecogs.com/gif.latex?%5Cmin_%7B%5Cmathbf%7Bx%7D%20%5Cin%20%5Cmathcal%7BX%7D%7D%20f%28%5Cmathbf%7Bx%7D%29%20&plus;%20%5Csum_%7Bi%20%5Cin%20%5Cmathcal%7BI%7D%7D%20g%28x_i%2Cc_i%29)
 
 ## Prerequisites
