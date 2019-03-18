@@ -41,7 +41,7 @@ The investment problem can be solved with two algorithms: Algorithm 1 (standard 
 
 ## Prerequisites
 
-Install [Julia 1.0](https://julialang.org/downloads/) (with packages [JuMP 0.18](https://github.com/JuliaOpt/JuMP.jl), [Gurobi 0.5](https://github.com/JuliaOpt/Gurobi.jl), [JLD2 0.1](https://github.com/JuliaIO/JLD2.jl), [CSV 0.4](https://github.com/JuliaData/CSV.jl)) and [Gurobi 7.5](http://www.gurobi.com/downloads/gurobi-optimizer). 
+Install [Julia 1.0](https://julialang.org/downloads/) (with packages [JuMP 0.18](https://github.com/JuliaOpt/JuMP.jl), [Gurobi](https://github.com/JuliaOpt/Gurobi.jl), [JLD2](https://github.com/JuliaIO/JLD2.jl), [CSV](https://github.com/JuliaData/CSV.jl)) and [Gurobi 7.5](http://www.gurobi.com/downloads/gurobi-optimizer). 
 
 ## Running the code
 
