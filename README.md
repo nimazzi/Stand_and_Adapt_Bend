@@ -46,11 +46,11 @@ Install [Julia 1.0](https://julialang.org/downloads/) (with packages [JuMP.jl 0.
 ## Running the code
 
 Open the terminal and change directory to the project folder.
-```Shell
+```ShellSession
 bash$ cd ~/path_to_folder/adaptive-oracles
 ```
 Start Julia and call main.jl
-```Shell
+```ShellSession
 bash$ julia
                _
    _       _ _(_)_     |  Documentation: https://docs.julialang.org
