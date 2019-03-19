@@ -47,11 +47,21 @@ Install [Julia 1.0](https://julialang.org/downloads/) (with packages [JuMP.jl 0.
 
 Open the terminal and change directory to the project folder.
 ```Shell
-cd ~/path_to_folder/adaptive-oracles
+bash$ cd ~/path_to_folder/adaptive-oracles
 ```
-Run main.jl with Julia.
+Start Julia and call main.jl
 ```Shell
-julia main.jl
+bash$ julia
+               _
+   _       _ _(_)_     |  Documentation: https://docs.julialang.org
+  (_)     | (_) (_)    |
+   _ _   _| |_  __ _   |  Type "?" for help, "]?" for Pkg help.
+  | | | | | | |/ _` |  |
+  | | |_| | | | (_| |  |  Version 1.0.2 (2018-11-08)
+ _/ |\__'_|_|_|\__'_|  |  Official https://julialang.org/ release
+|__/                   |
+
+julia> include("main.jl")
 ```
 You will be asked to select the case study (1, 2, 3 or 4),
 ```ShellSession
