@@ -49,7 +49,7 @@ Open the terminal and change directory to the project folder.
 ```ShellSession
 bash$ cd ~/path_to_folder/adaptive-oracles
 ```
-Start Julia and call main.jl
+Start Julia and include "main.jl"
 ```ShellSession
 bash$ julia
                _
