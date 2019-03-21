@@ -26,19 +26,3 @@ if (algorithm==2)
     Adapt_Bend(case,Ms,Mp,Ps,Pp,U)          # run Adapt_Bend algorithm
 end
 
-
-# const ITmax = 1000                          # set max number of iterations (-)
-# const ϵ = .01                               # set tolerance gap (%)
-# case=2
-# algorithm=2
-# Ms,Mp,Ps,Pp,U = generate_data(case)         # generate struct data
-#
-# R,E,O,J,B,S,T = gen_structs_AB(Ms,Mp,Ps,Pp,U)
-# E,S,O,J,T = Adapt_Bend_step_0(Ms,Mp,U,E,S,O,J,T)
-#
-# R,J   = Adapt_Bend_step_A(R,J)
-# B     = Adapt_Bend_step_B(R,B)
-# E,S   = Adapt_Bend_step_C(Mp,U,R,J,E,S)
-# O,J,T = Adapt_Bend_step_D(S,U,O,J,T)
-# B     = Adapt_Bend_step_E(Mp,J,R,B)
-# R,J   = Adapt_Bend_step_F(J,U,R,B)
