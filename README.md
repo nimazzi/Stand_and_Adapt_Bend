@@ -37,7 +37,7 @@ We consider three possible sources of uncertainty, i.e., ![img23](https://latex.
 | 3  | ![a2](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i%2Cc%5E%7B%5Cmathrm%7Bco%7D_2%7D_i) | 91 |
 | 4  | ![a3](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i%2Cc%5E%7B%5Cmathrm%7Bco%7D_2%7D_i%2Cc%5E%7Bnucl%7D_i)| 757 |
 
-The investment problem can be solved with two algorithms: Algorithm 1 (standard Benders decomposition) and Algorithm 2 (Benders decomposition with adaptive oracles). Both Algorithm 1 and 2 are presented in ''Benders Decomposition with Adaptive Oracles for Large Scale Optimization'' (link).
+The investment problem can be solved with two algorithms: Algorithm 1 (![al1](https://latex.codecogs.com/gif.latex?%5Ctext%7B%5Ctexttt%7BStand%5C_Bend%7D%7D)) and Algorithm (Adapt_Bend). Both Algorithm ![al1](https://latex.codecogs.com/gif.latex?%5Ctext%7B%5Ctexttt%7BStand%5C_Bend%7D%7D) and Adapt_Bend are presented in ''Benders Decomposition with Adaptive Oracles for Large Scale Optimization'' (link).
 
 ## Prerequisites
 
@@ -47,7 +47,7 @@ Install [Julia 1.0](https://julialang.org/downloads/) (with packages [JuMP.jl 0.
 
 Open the terminal and change directory to the project folder.
 ```ShellSession
-bash$ cd ~/path_to_folder/adaptive-oracles
+bash$ cd ~/path_to_folder/Stand_and_Adapt_Bend
 ```
 Start Julia and include "main.jl"
 ```ShellSession
@@ -77,8 +77,8 @@ loading functions...
 ```
 and the algorithm (1 or 2) used to solve the problem
 ```ShellSession
- algorithm 1 -> standard
- algorithm 2 -> with adaptive oracles
+ algorithm 1 -> Stand_Bend (Standard Benders)
+ algorithm 2 -> Adapt_Bend (Benders with Adaptive Oracles)
  select Benders-type algorithm:
 2
 ```
@@ -89,7 +89,7 @@ precompiling code...
  
 decomposition algorithm:
 **************************************************
- algorithm          : Benders with adaptive oracles
+ algorithm          : Adapt_Bend
  case               : 2
  investment  nodes  : 4
  operational nodes  : 12
