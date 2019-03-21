@@ -37,7 +37,7 @@ We consider three possible sources of uncertainty, i.e., ![img23](https://latex.
 | 3  | ![a2](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i%2Cc%5E%7B%5Cmathrm%7Bco%7D_2%7D_i) | 91 |
 | 4  | ![a3](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i%2Cc%5E%7B%5Cmathrm%7Bco%7D_2%7D_i%2Cc%5E%7Bnucl%7D_i)| 757 |
 
-The investment problem can be solved with two algorithms: Algorithm 1 (![al1](https://latex.codecogs.com/gif.latex?%5Ctext%7B%5Ctexttt%7BStand%5C_Bend%7D%7D)) and Algorithm (Adapt_Bend). Both Algorithm ![al1](https://latex.codecogs.com/gif.latex?%5Ctext%7B%5Ctexttt%7BStand%5C_Bend%7D%7D) and Adapt_Bend are presented in ''Benders Decomposition with Adaptive Oracles for Large Scale Optimization'' (link).
+The investment problem can be solved with two algorithms: Algorithm 1 (![al1](https://latex.codecogs.com/gif.latex?%5Ctext%7B%5Ctexttt%7BStand%5C_Bend%7D%7D)) and Algorithm (![al2](https://latex.codecogs.com/gif.latex?%5Ctext%7B%5Ctexttt%7BAdapt%5C_Bend%7D%7D)). Both Algorithm ![al1](https://latex.codecogs.com/gif.latex?%5Ctext%7B%5Ctexttt%7BStand%5C_Bend%7D%7D) and ![al2](https://latex.codecogs.com/gif.latex?%5Ctext%7B%5Ctexttt%7BAdapt%5C_Bend%7D%7D) are presented in ''Benders Decomposition with Adaptive Oracles for Large Scale Optimization'' (link).
 
 ## Prerequisites
 
