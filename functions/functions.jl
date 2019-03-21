@@ -1,33 +1,70 @@
-function run_benders(Ms::Ms_type,
-                     Mp::Mp_type,
-                     Ps::Ps_type,
-                     Pp::Pp_type,
-                      U::U_type,
-                   case::Int64,
-              algorithm::Int64)
+# function Benders(Ms::Ms_type,
+#                  Mp::Mp_type,
+#                  Ps::Ps_type,
+#                  Pp::Pp_type,
+#                   U::U_type,
+#                case::Int64,
+#           algorithm::Int64)
+#
+#     if (algorithm==1)
+#         R,E,J,B = gen_structs_SB(Ms,Mp,Ps,Pp,U)
+#         print_init_SB(case,Ms)
+#         for it in 1:ITmax
+#             R,E,J,B = iter_SB(Mp,U,R,E,J,B)
+#             print_info_SB(J,B)
+#             (J.Δ <= ϵ) ? break : nothing
+#         end
+#         print_end_summary_SB(Ms,U,R,B,case)
+#     end
+#
+#     if (algorithm==2)
+#         R,E,O,J,B,S,T = gen_structs_AB(Ms,Mp,Ps,Pp,U)
+#         print_init_AB(case,Ms)
+#         E,S,O,J,T = Adapt_Bend_step_0(Ms,Mp,U,E,S,O,J,T)
+#         for it in 1:ITmax
+#             R,E,O,S,B,J,T = iter_AB(Mp,U,R,E,O,S,B,J,T)
+#             print_info_AB(J,B)
+#             (J.Δ <= ϵ) ? break : nothing
+#         end
+#         print_end_summary_AB(Ms,U,R,B,case)
+#     end
+# end
 
-    if (algorithm==1)
-        R,E,J,B = generate_structs_st(Ms,Mp,Ps,Pp,U)
-        print_init_st(case,Ms)
-        for it in 1:ITmax
-            R,E,J,B = do_step_st(Mp,U,R,E,J,B)
-            print_info_st(J,B)
-            (J.Δ <= ϵ) ? break : nothing
-        end
-        print_end_summary_st(Ms,U,R,B,case)
-    end
+function Stand_Bend(case::Int64,
+                      Ms::Ms_type,
+                      Mp::Mp_type,
+                      Ps::Ps_type,
+                      Pp::Pp_type,
+                       U::U_type)
 
-    if (algorithm==2)
-        R,E,O,J,B,S,T = generate_structs_or(Ms,Mp,Ps,Pp,U)
-        print_init_or(case,Ms)
-        E,S,O,J,T = do_step0_or(Ms,Mp,U,E,S,O,J,T)
-        for it in 1:ITmax
-            R,E,O,S,B,J,T = do_step_or(Mp,U,R,E,O,S,B,J,T)
-            print_info_or(J,B)
-            (J.Δ <= ϵ) ? break : nothing
-        end
-        print_end_summary_or(Ms,U,R,B,case)
+    R,E,J,B = gen_structs_SB(Ms,Mp,Ps,Pp,U)
+    print_init_SB(case,Ms)
+    for it in 1:ITmax
+        R,E,J,B = iter_SB(Mp,U,R,E,J,B)
+        print_info_SB(J,B)
+        (J.Δ <= ϵ) ? break : nothing
     end
+    print_end_summary_SB(Ms,U,R,B,case)
+
+end
+
+function Adapt_Bend(case::Int64,
+                      Ms::Ms_type,
+                      Mp::Mp_type,
+                      Ps::Ps_type,
+                      Pp::Pp_type,
+                       U::U_type)
+
+    R,E,O,J,B,S,T = gen_structs_AB(Ms,Mp,Ps,Pp,U)
+    print_init_AB(case,Ms)
+    E,S,O,J,T = Adapt_Bend_step_0(Ms,Mp,U,E,S,O,J,T)
+    for it in 1:ITmax
+       R,E,O,S,B,J,T = iter_AB(Mp,U,R,E,O,S,B,J,T)
+       print_info_AB(J,B)
+       (J.Δ <= ϵ) ? break : nothing
+    end
+    print_end_summary_AB(Ms,U,R,B,case)
+
 end
 
 function get_case()::Int64
@@ -52,8 +89,8 @@ end
 function get_algorithm()::Int64
 
     println("")
-    println(" algorithm 1 -> standard")
-    println(" algorithm 2 -> with adaptive oracles")
+    println(" algorithm 1 -> Stand_Bend (Standard Benders)")
+    println(" algorithm 2 -> Adapt_Bend (Benders with Adaptive Oracles)")
     println(" select Benders-type algorithm:")
     al = ""
     al = readline()
