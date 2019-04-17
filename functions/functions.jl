@@ -1,35 +1,3 @@
-# function Benders(Ms::Ms_type,
-#                  Mp::Mp_type,
-#                  Ps::Ps_type,
-#                  Pp::Pp_type,
-#                   U::U_type,
-#                case::Int64,
-#           algorithm::Int64)
-#
-#     if (algorithm==1)
-#         R,E,J,B = gen_structs_SB(Ms,Mp,Ps,Pp,U)
-#         print_init_SB(case,Ms)
-#         for it in 1:ITmax
-#             R,E,J,B = iter_SB(Mp,U,R,E,J,B)
-#             print_info_SB(J,B)
-#             (J.Δ <= ϵ) ? break : nothing
-#         end
-#         print_end_summary_SB(Ms,U,R,B,case)
-#     end
-#
-#     if (algorithm==2)
-#         R,E,O,J,B,S,T = gen_structs_AB(Ms,Mp,Ps,Pp,U)
-#         print_init_AB(case,Ms)
-#         E,S,O,J,T = Adapt_Bend_step_0(Ms,Mp,U,E,S,O,J,T)
-#         for it in 1:ITmax
-#             R,E,O,S,B,J,T = iter_AB(Mp,U,R,E,O,S,B,J,T)
-#             print_info_AB(J,B)
-#             (J.Δ <= ϵ) ? break : nothing
-#         end
-#         print_end_summary_AB(Ms,U,R,B,case)
-#     end
-# end
-
 function Stand_Bend(case::Int64,
                       Ms::Ms_type,
                       Mp::Mp_type,
