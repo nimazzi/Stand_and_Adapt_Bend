@@ -71,14 +71,6 @@ You will be asked to select the case study (0, 1, 2, or 3),
 1 
 ```
 and the algorithm (0, 1, 2, or 3) used to solve the problem
-
-0 &rarr; solve deterministic equivalent of the problem (may fail for some cases)
-
-1 &rarr; solve using Benders algorithm
-
-2 &rarr; solve using Benders algorithm with Adaptive Oracles
-
-3 &rarr; solve using Benders algorithm of [link](https://epubs.siam.org/doi/abs/10.1137/S1052623497318700?casa_token=n02EnFEIc0YAAAAA:sBYilEN5fBx7vHkXA7RsDSak0TRuQ_GUBT37lTKy__j8mbybFn36ph2d6L_IYAWRjbIiX0_ZhQ)
 ```ShellSession
  algorithm 0 -> deterministic equivalent
  algorithm 1 -> Stand_Bend (Standard Benders)
@@ -182,7 +174,7 @@ Open the terminal and change directory to the project folder.
 ```ShellSession
 bash$ cd ~/path_to_folder/Stand_and_Adapt_Bend/parallel
 ```
-Modify file */functions/load_cluster.jl* if loading workers on multiple machines
+Modify file */functions/load_cluster.jl* if loading workers on multiple machines, specify the ip address of the machine, the path to the gurobi license, and the path to the julia executable.
 ```
 machine_1   = Dict("hostip" => "000.000.000.000",
                    "grblcs" => "path_to_gurobi_license",
@@ -202,4 +194,106 @@ bash$ julia
 
 julia> include("main.jl")
 ```
+You will be asked to select the case study (0, 1, 2, or 3),
+```ShellSession
+ case 0 -> 0 uncertain parameters
+ case 1 -> 1 uncertain parameters
+ case 2 -> 2 uncertain parameters
+ case 3 -> 3 uncertain parameters
+ select case study:
+2 
+```
+select the algorithm (1 or 2) used to solve the problem
+```ShellSession
+ algorithm 1 -> Stand_Bend (Standard Benders)
+ algorithm 2 -> Adapt_Bend (Benders with Adaptive Oracles)
+ select Benders-type algorithm:
+2 
+```
+and the number of workers to start up on every computer
+```ShellSession
+ select number of workers on machine0 (local_machine)
+ select 0 <= w <= 11 :
+2 
 
+ select number of workers on machine1 (000.000.000.000)
+ select 0 <= w <= 9 :
+0 
+```
+
+The algorithm starts and stops once reached the predifined tolerance, e.g.,
+```ShellSession
+ */--------------------------------/*
+ algorithm          : adapt_bend
+ case               : 2
+ investment  nodes  : 10
+ operational nodes  : 90
+ workers            : 2
+ */--------------------------------/*
+ k =   1, δ = 99.759 %, t =    3.27 s 
+ k =   2, δ = 99.116 %, t =    2.23 s 
+ ...
+ k = 144, δ =  0.013 %, t =    3.76 s 
+ k = 145, δ =  0.009 %, t =     3.0 s 
+ */--------------------------------/*
+
+ */--------------------------------------------------------------------/*
+  
+ co2 emission limit : uncertain
+ co2 emission cost  : known
+ uranium cost       : known
+ investment nodes   : 10
+ operational nodes  : 90
+ optimal objective  : 1.374 x 10^11 £
+
+ */--------------------------------------------------------------------/*
+
+ optimal investments (GW) @ 0 years
+ ----------------
+ tech.         i1
+ ----------------
+ coal         0.0 
+ coalccs      1.0
+ OCGT         0.0
+ CCGT        11.5
+ diesel       2.0
+ nuclear      0.0
+ pumpL        0.0
+ pumpH        0.0
+ lithium      0.0
+ onwind      19.0
+ offwind      0.0
+ solar        0.0
+ ----------------
+
+ optimal investments (GW) @ 5 years
+ ------------------------------------------------------------------------
+ tech.         i1     i2     i3     i4     i5     i6     i7     i8     i9
+ ------------------------------------------------------------------------
+ coal         0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0 
+ coalccs      6.5    6.5    6.5    0.0    0.0    1.4    0.0    0.0    1.4
+ OCGT         0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0
+ CCGT         0.0    0.0    0.0    6.0    2.9    0.0    5.6    2.7    0.0
+ diesel       0.0    0.0    0.0    2.1    2.1    1.3    2.6    2.4    1.4
+ nuclear     10.0   10.0   10.0    4.8    7.9   10.0    4.7    7.8   10.0
+ pumpL        0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0
+ pumpH        0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0
+ lithium      0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0
+ onwind       0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0
+ offwind      0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0
+ solar        0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0    0.0
+ ------------------------------------------------------------------------
+
+ */--------------------------------------------------------------------/*
+
+ computational results:
+ -------------------------------------------------------------------
+ ϵ-target (%) | iters     time (s)   RMP (%)   SP (%)   Oracles (%)
+ -------------------------------------------------------------------
+ 1.00         | 38        112         3.17      95.89    0.65
+ 0.10         | 83        263         3.87      94.99    0.96
+ 0.01         | 145       490         4.77      93.76    1.33
+ -------------------------------------------------------------------
+
+ */--------------------------------------------------------------------/*
+```
