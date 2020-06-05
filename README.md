@@ -74,9 +74,11 @@ and the algorithm (0, 1, 2, or 3) used to solve the problem
 
 0 &rarr; solve deterministic equivalent of the problem (may fail for some cases)
 
-1 &rarr; solve using standard Benders algorithm
+1 &rarr; solve using Benders algorithm
 
 2 &rarr; solve using Benders algorithm with Adaptive Oracles (additional parameter w &rarr; subproblems solved per iter)
+
+3 &rarr; solve using Benders algorithm of [ref](https://epubs.siam.org/doi/abs/10.1137/S1052623497318700?casa_token=n02EnFEIc0YAAAAA:sBYilEN5fBx7vHkXA7RsDSak0TRuQ_GUBT37lTKy__j8mbybFn36ph2d6L_IYAWRjbIiX0_ZhQ) (additional parameter q &rarr; update tolerance coeff., 10 suggested)
 ```ShellSession
  algorithm 0 -> deterministic equivalent
  algorithm 1 -> Stand_Bend (Standard Benders)
