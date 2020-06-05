@@ -174,5 +174,32 @@ The algorithm starts and stops once reached the predifined tolerance, e.g.,
  -------------------------------------------------------------------
 
  */--------------------------------------------------------------------/*
-
 ``` 
+
+## Running the parallel code
+
+Open the terminal and change directory to the project folder.
+```ShellSession
+bash$ cd ~/path_to_folder/Stand_and_Adapt_Bend/parallel
+```
+Modify file */functions/load_cluster.jl* if loading workers on multiple machines
+```
+machine_1   = Dict("hostip" => "000.000.000.000",
+                   "grblcs" => "path_to_gurobi_license",
+                   "jlpath" => "path_to_julia_exec")
+```
+Start Julia and include "main.jl"
+```ShellSession
+bash$ julia
+               _ 
+   _       _ _(_)_     |  Documentation: https://docs.julialang.org
+  (_)     | (_) (_)    |
+   _ _   _| |_  __ _   |  Type "?" for help, "]?" for Pkg help.
+  | | | | | | |/ _` |  |
+  | | |_| | | | (_| |  |  Version 1.4.0 (2020-03-21)
+ _/ |\__'_|_|_|\__'_|  |  Official https://julialang.org/ release
+|__/                   |
+
+julia> include("main.jl")
+```
+
