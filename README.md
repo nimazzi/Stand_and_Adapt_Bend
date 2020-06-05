@@ -72,7 +72,7 @@ You will be asked to select the case study (0, 1, 2, or 3),
 ```
 and the algorithm (0, 1, 2, or 3) used to solve the problem
 
-0 -> solve deterministic equivalent of the problem (may fail for some cases)
+0 &rarr; solve deterministic equivalent of the problem (may fail for some cases)
 
 1 -> solve using standard Benders algorithm
 ```ShellSession
