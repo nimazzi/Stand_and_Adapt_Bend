@@ -26,16 +26,7 @@ where ![img9](https://latex.codecogs.com/gif.latex?c%5E%7Bnucl%7D_i) is the uran
 
 where the variable ![img12](https://latex.codecogs.com/gif.latex?x%5E%7Binst%7D_%7Bpi%7D) is the newly installed capacity of technology ![img13](https://latex.codecogs.com/gif.latex?p) at node ![img14](https://latex.codecogs.com/gif.latex?i). Parameters ![img14](https://latex.codecogs.com/gif.latex?c%5E%7Binv%7D_%7Bpi%7D) and ![img15](https://latex.codecogs.com/gif.latex?c%5E%7Bfix%7D_%7Bpi%7D) are the unitary investment and fixed cost of technology ![img16](https://latex.codecogs.com/gif.latex?p) at node ![img14](https://latex.codecogs.com/gif.latex?i). Parameters ![img17](https://latex.codecogs.com/gif.latex?c%5E%7Binv%7D_%7Bpi%7D). The accumulated capacity ![img18](https://latex.codecogs.com/gif.latex?x%5E%7Bacc%7D_%7Bpi%7D) at node ![img19](https://latex.codecogs.com/gif.latex?i) is computed as the sum of the historical capacity and the newly installed capacity ![img21](https://latex.codecogs.com/gif.latex?x%5E%7Binst%7D_%7Bpi%27%7D) in all nodes ![img22](https://latex.codecogs.com/gif.latex?i%27) ancestors to ![img23](https://latex.codecogs.com/gif.latex?i).
 
-We consider three possible sources of uncertainty, i.e., ![img23](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i), ![img24](https://latex.codecogs.com/gif.latex?c%5E%7B%5Cmathrm%7Bco%7D_2%7D_i), and ![img25](https://latex.codecogs.com/gif.latex?c%5E%7Bnucl%7D_i). Each uncertain parameters has 3 possible outcomes in 5 years, each of which is linked to 3 additional possible outcomes in 10 years. The result is 9 possible trajectories for each uncertainty, all with the same probability. We consider 4 different cases of the investment problem. Case 1 is the deterministic version, where ![img26](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i), ![img27](https://latex.codecogs.com/gif.latex?c%5E%7B%5Cmathrm%7Bco%7D_2%7D_i), and ![img28](https://latex.codecogs.com/gif.latex?c%5E%7Bnucl%7D_i) are deterministic parameters (weighted average of the scenarios). Then, case 2 has 1 uncertain parameter, case 3 has 2 uncertain parameters, and case 4 has 3 uncertain parameters. The number of decision nodes for the 4 versions of the problem is
-
-| ![tt1](https://latex.codecogs.com/gif.latex?%5Cmathrm%7Bcase%7D) |  
-  ![tt3](https://latex.codecogs.com/gif.latex?%5Cmathrm%7Buncertain%5C%3Bparameters%7D) |
-  ![tt2](https://latex.codecogs.com/gif.latex?%7C%5Cmathcal%7BI%7D%7C) | 
-|:--:|:--:|:--:|
-| 1  | -  | 3  |
-| 2  | ![a1](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i) | 13 |
-| 3  | ![a2](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i%2Cc%5E%7B%5Cmathrm%7Bco%7D_2%7D_i) | 91 |
-| 4  | ![a3](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i%2Cc%5E%7B%5Cmathrm%7Bco%7D_2%7D_i%2Cc%5E%7Bnucl%7D_i)| 757 |
+We consider three possible sources of uncertainty, i.e., ![img23](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i), ![img24](https://latex.codecogs.com/gif.latex?c%5E%7B%5Cmathrm%7Bco%7D_2%7D_i), and ![img25](https://latex.codecogs.com/gif.latex?c%5E%7Bnucl%7D_i). Each uncertain parameters has 3 possible outcomes in 5 years, each of which is linked to 3 additional possible outcomes in 10 years. The result is 9 possible trajectories for each uncertainty, all with the same probability. We consider 4 different cases of the investment problem. Case 0 is the deterministic version, where ![img26](https://latex.codecogs.com/gif.latex?%5Cnu%5E%7BE%7D_i), ![img27](https://latex.codecogs.com/gif.latex?c%5E%7B%5Cmathrm%7Bco%7D_2%7D_i), and ![img28](https://latex.codecogs.com/gif.latex?c%5E%7Bnucl%7D_i) are deterministic parameters (weighted average of the scenarios). Then, case 1 has 1 uncertain parameter, case 2 has 2 uncertain parameters, and case 3 has 3 uncertain parameters. The number of decision nodes for the 4 versions of the problem is
 
 | case | uncertain parameters | decision nodes |
 |:----:|:---------------:|:--------------:|
@@ -48,7 +39,7 @@ The investment problem can be solved with two algorithms: Algorithm 1 (*Stand_Be
 
 ## Prerequisites
 
-Install [Julia 1.0](https://julialang.org/downloads/) (with packages [JuMP.jl 0.18](https://github.com/JuliaOpt/JuMP.jl), [Gurobi.jl](https://github.com/JuliaOpt/Gurobi.jl), [JLD2.jl](https://github.com/JuliaIO/JLD2.jl), [CSV.jl](https://github.com/JuliaData/CSV.jl)) and [Gurobi 7.5](http://www.gurobi.com/downloads/gurobi-optimizer). 
+Install [Julia 1.4](https://julialang.org/downloads/) (with packages [JuMP.jl 0.21](https://github.com/JuliaOpt/JuMP.jl), [Gurobi.jl](https://github.com/JuliaOpt/Gurobi.jl), [Suppressor.jl](https://github.com/JuliaIO/Suppressor.jl), [CSV.jl](https://github.com/JuliaData/CSV.jl), [JLD.jl](https://github.com/JuliaIO/JLD.jl), [Printf.jl](https://github.com/JuliaLang/julia/blob/master/stdlib/Printf/src/Printf.jl), [Clustering.jl](https://github.com/JuliaStats/Clustering.jl)) and [Gurobi 9.0](http://www.gurobi.com/downloads/gurobi-optimizer). 
 
 ## Running the code
 
