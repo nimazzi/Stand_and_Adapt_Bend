@@ -76,9 +76,9 @@ and the algorithm (0, 1, 2, or 3) used to solve the problem
 
 1 &rarr; solve using Benders algorithm
 
-2 &rarr; solve using Benders algorithm with Adaptive Oracles (additional parameter w &rarr; subproblems solved per iter)
+2 &rarr; solve using Benders algorithm with Adaptive Oracles
 
-3 &rarr; solve using Benders algorithm of [ref](https://epubs.siam.org/doi/abs/10.1137/S1052623497318700?casa_token=n02EnFEIc0YAAAAA:sBYilEN5fBx7vHkXA7RsDSak0TRuQ_GUBT37lTKy__j8mbybFn36ph2d6L_IYAWRjbIiX0_ZhQ) (additional parameter q &rarr; update tolerance coeff., 10 suggested)
+3 &rarr; solve using Benders algorithm of [link](https://epubs.siam.org/doi/abs/10.1137/S1052623497318700?casa_token=n02EnFEIc0YAAAAA:sBYilEN5fBx7vHkXA7RsDSak0TRuQ_GUBT37lTKy__j8mbybFn36ph2d6L_IYAWRjbIiX0_ZhQ)
 ```ShellSession
  algorithm 0 -> deterministic equivalent
  algorithm 1 -> Stand_Bend (Standard Benders)
@@ -87,80 +87,92 @@ and the algorithm (0, 1, 2, or 3) used to solve the problem
  select Benders-type algorithm:
 2 
 ```
+if algorithm *Adapt_Bend* is selected, input the number *w* of subproblems to solve at each iteration
+```
+ number of subproblems to solve each iter j:
+ input w (0 < w < 12)
+1 
+```
+if algorithm *Zaker_Bend* is selected, input the coefficient *q* to update the optimality tolerance (10 suggested)
+```
+ select parameter σ:
+ input σ (1 < σ <= 100)
+10 
+```
 The algorithm starts and stops once reached the predifined tolerance, e.g.,
 ```ShellSession
-generating datasets...
-precompiling code...
- 
-decomposition algorithm:
-**************************************************
- algorithm          : Adapt_Bend
- case               : 2
+ */--------------------------------/*
+ algorithm          : adapt_bend
+ case               : 1
+ subs per iter      : 1
  investment  nodes  : 4
  operational nodes  : 12
---------------------------------------------------
- j =    1, Δ =   99.791 %, t =     2.6 s
- j =    2, Δ =   99.541 %, t =     1.6 s
+ */--------------------------------/*
+ k =   1, δ = 99.791 %, t =    2.31 s 
+ k =   2, δ = 99.542 %, t =    0.93 s 
  ...
- j =   73, Δ =    0.012 %, t =     3.9 s
- j =   74, Δ =    0.009 %, t =     2.4 s
+ k =  69, δ =  0.010 %, t =    2.65 s 
+ k =  70, δ =  0.009 %, t =    4.24 s 
+ */--------------------------------/*
 
-***************************************************************************
-***************************************************************************
- 
+ */--------------------------------------------------------------------/*
+  
  co2 emission limit : uncertain
- co2 emission cost  : deterministic
- uranium cost       : deterministic
+ co2 emission cost  : known
+ uranium cost       : known
  investment nodes   : 4
  operational nodes  : 12
- optimal objective  : 1.382 x 10^11 £
- 
- optimal investments @ 0 years
+ optimal objective  : 1.381 x 10^11 £
+
+ */--------------------------------------------------------------------/*
+
+ optimal investments (GW) @ 0 years
  ----------------
- tech.         ω1
-----------------
- coal           0
- coalccs        0
- OCGT           0
- CCGT          13
- diesel         2
- nuclear        0
- pumpL          0
- pumpH          0
- lithium        0
- onwind        19
- offwind        0
- solar          0
+ tech.         i1
  ----------------
- 
- optimal investments @ 5 years
+ coal         0.0 
+ coalccs      0.0
+ OCGT         0.0
+ CCGT        13.3
+ diesel       1.8
+ nuclear      0.0
+ pumpL        0.0
+ pumpH        0.0
+ lithium      0.0
+ onwind      19.0
+ offwind      0.0
+ solar        0.0
+ ----------------
+
+ optimal investments (GW) @ 5 years
  ------------------------------
- tech.         ω1     ω2     ω3
+ tech.         i1     i2     i3
  ------------------------------
- coal           0      0      0
- coalccs        0      0      2
- OCGT           0      0      0
- CCGT           4      1      0
- diesel         3      2      0
- nuclear        6      9     10
- pumpL          0      0      0
- pumpH          0      0      0
- lithium        0      0      0
- onwind         0      0      0
- offwind        0      0      0
- solar          0      0      0
+ coal         0.0    0.0    0.0 
+ coalccs      0.0    0.0    2.3
+ OCGT         0.0    0.0    0.0
+ CCGT         4.4    0.9    0.0
+ diesel       2.5    2.5    0.1
+ nuclear      5.4    8.6   10.0
+ pumpL        0.0    0.0    0.0
+ pumpH        0.0    0.0    0.0
+ lithium      0.0    0.0    0.0
+ onwind       0.0    0.0    0.0
+ offwind      0.0    0.0    0.0
+ solar        0.0    0.0    0.0
  ------------------------------
- 
+
+ */--------------------------------------------------------------------/*
+
  computational results:
  -------------------------------------------------------------------
  ϵ-target (%) | iters     time (s)   RMP (%)   SP (%)   Oracles (%)
  -------------------------------------------------------------------
- 1.00         | 42        123         0.05      99.83    0.12
- 0.10         | 48        139         0.05      99.82    0.12
- 0.01         | 74        258         0.05      99.83    0.12
+ 1.00         | 44        87          0.10      99.46    0.11
+ 0.10         | 51        106         0.09      99.52    0.12
+ 0.01         | 70        155         0.07      99.58    0.13
  -------------------------------------------------------------------
 
-***************************************************************************
-***************************************************************************
+ */--------------------------------------------------------------------/*
 
 ``` 
