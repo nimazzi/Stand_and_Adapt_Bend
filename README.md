@@ -39,13 +39,13 @@ The investment problem can be solved with two algorithms: Algorithm 1 (*Stand_Be
 
 ## Prerequisites
 
-Install [Julia 1.4](https://julialang.org/downloads/) (with packages [JuMP.jl 0.21](https://github.com/JuliaOpt/JuMP.jl), [Gurobi.jl](https://github.com/JuliaOpt/Gurobi.jl), [Suppressor.jl](https://github.com/JuliaIO/Suppressor.jl), [CSV.jl](https://github.com/JuliaData/CSV.jl), [JLD.jl](https://github.com/JuliaIO/JLD.jl), [Printf.jl](https://github.com/JuliaLang/julia/blob/master/stdlib/Printf/src/Printf.jl), [Clustering.jl](https://github.com/JuliaStats/Clustering.jl)) and [Gurobi 9.0](http://www.gurobi.com/downloads/gurobi-optimizer). 
+Install [Julia 1.4](https://julialang.org/downloads/) (with packages [JuMP.jl 0.21](https://github.com/JuliaOpt/JuMP.jl), [Gurobi.jl](https://github.com/JuliaOpt/Gurobi.jl), [Suppressor.jl](https://github.com/JuliaIO/Suppressor.jl), [CSV.jl](https://github.com/JuliaData/CSV.jl), [JLD.jl](https://github.com/JuliaIO/JLD.jl), [Printf.jl](https://github.com/JuliaLang/julia/blob/master/stdlib/Printf/src/Printf.jl), [Clustering.jl](https://github.com/JuliaStats/Clustering.jl), [ParallelDataTransfer.jl](https://github.com/ChrisRackauckas/ParallelDataTransfer.jl)) and [Gurobi 9.0](http://www.gurobi.com/downloads/gurobi-optimizer). 
 
-## Running the code
+## Running the serial code
 
 Open the terminal and change directory to the project folder.
 ```ShellSession
-bash$ cd ~/path_to_folder/Stand_and_Adapt_Bend
+bash$ cd ~/path_to_folder/Stand_and_Adapt_Bend/serial
 ```
 Start Julia and include "main.jl"
 ```ShellSession
