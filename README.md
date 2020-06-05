@@ -50,35 +50,34 @@ bash$ cd ~/path_to_folder/Stand_and_Adapt_Bend/serial
 Start Julia and include "main.jl"
 ```ShellSession
 bash$ julia
-               _
+               _ 
    _       _ _(_)_     |  Documentation: https://docs.julialang.org
   (_)     | (_) (_)    |
    _ _   _| |_  __ _   |  Type "?" for help, "]?" for Pkg help.
   | | | | | | |/ _` |  |
-  | | |_| | | | (_| |  |  Version 1.0.2 (2018-11-08)
+  | | |_| | | | (_| |  |  Version 1.4.0 (2020-03-21)
  _/ |\__'_|_|_|\__'_|  |  Official https://julialang.org/ release
 |__/                   |
 
 julia> include("main.jl")
 ```
-You will be asked to select the case study (1, 2, 3 or 4),
+You will be asked to select the case study (0, 1, 2, or 3),
 ```ShellSession
-loading packages...
-loading functions...
-
- case 1 -> 0 uncertain parameters
- case 2 -> 1 uncertain parameters
- case 3 -> 2 uncertain parameters
- case 4 -> 3 uncertain parameters
+ case 0 -> 0 uncertain parameters
+ case 1 -> 1 uncertain parameters
+ case 2 -> 2 uncertain parameters
+ case 3 -> 3 uncertain parameters
  select case study:
-2
+1 
 ```
-and the algorithm (1 or 2) used to solve the problem
+and the algorithm (0, 1, 2, or 3) used to solve the problem
 ```ShellSession
+ algorithm 0 -> deterministic equivalent
  algorithm 1 -> Stand_Bend (Standard Benders)
  algorithm 2 -> Adapt_Bend (Benders with Adaptive Oracles)
+ algorithm 3 -> Zaker_Bend (Benders, Zakeri et al.)
  select Benders-type algorithm:
-2
+2 
 ```
 The algorithm starts and stops once reached the predifined tolerance, e.g.,
 ```ShellSession
