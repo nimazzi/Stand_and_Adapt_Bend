@@ -116,6 +116,7 @@ end
 
 export E__type                               # structure of exact subproblem
 export O__type                               # structure of oracles
+export Q__type                               # structure of extended exact solutions stored during the solution
 export d__type                               # structure of subproblem data
 export t1_type                               # structure of temporary data (updated each iteration)    -> valid only for algorithm 1 (Stand_Bend)
 export t2_type                               # structure of temporary data (updated each iteration)    -> valid only for algorithm 2 (Adapt_Bend)
@@ -139,6 +140,17 @@ mutable struct O__type
    help::Array{Float64,1}                    # rhs values of old constraints (old exact solutions)
       n::Int64                               # number of exact solutions added to the oracle
 end
+
+mutable struct Q__type
+     ϕ::Array{Float64,1}                     # operational cost dependent on uncertain cost cᵢ
+    c0::Float64                              # operational cost independent of uncertain costs c
+    yG::Array{Float64,3}                     # generation level of conventional generation
+    yI::Array{Float64,3}                     # charging power of storage generation
+    yO::Array{Float64,3}                     # discharging power of storage generation
+    yL::Array{Float64,3}                     # energy level of storage generation
+    yS::Array{Float64,2}                     # load shedding
+    x0::Array{Float64,1}                     # values of rhs parameters in the subproblem (eg, capacity)
+ end
 
 mutable struct d__type
      ps::ps_type                             # data of subproblem sets
@@ -186,6 +198,7 @@ mutable struct S2_type
     olb::O__type                             # oracle for lower bound
     oub::O__type                             # oracle for upper bound
       m::M__type                             # exact solutions stored
+      q::Array{Q__type,1}                    # extended exact solutions stored
    data::d__type                             # subproblem data
    temp::t2_type                             # temporary data (updated each iteration)
 end 

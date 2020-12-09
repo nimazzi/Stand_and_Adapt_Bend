@@ -20,49 +20,49 @@ function MP!(m::JuMP.Model,ms::ms_type,mp::mp_type,ps::ps_type,pp::pp_type,unc::
     
     xr,cr=1:unc.nx,1:unc.nc
     # */ -- master variables --------------------------------------- /* #
-    @variable(m, f, container=Array)
-    @variable(m, x0[ms.P,ms.I0] >= .0, container=Array)
-    @variable(m, x[xr,ms.I], container=Array)
-    @variable(m, β[ms.I] >= .0, container=Array)
+    @variable(m, f, container=Array) # investment-only cost
+    @variable(m, x0[ms.P,ms.I0] >= .0, container=Array) # newly installed capacity
+    @variable(m, x[xr,ms.I], container=Array) # rhs paramters for operational subproblem (eg, accumulated capacity)
+    @variable(m, β[ms.I] >= .0, container=Array) # operational cost of node i
     # */ -- subproblems variables ---------------------------------- /* #
-    @variable(m, ϕ[ms.I,cr], container=Array)
-    @variable(m, c0[ms.I], container=Array) 
-    @variable(m, yG[ms.I,ps.G,ps.S,ps.H] >= 0, container=Array)
-    @variable(m, yI[ms.I,ps.B,ps.S,ps.H] >= 0, container=Array) 
-    @variable(m, yO[ms.I,ps.B,ps.S,ps.H] >= 0, container=Array) 
-    @variable(m, yL[ms.I,ps.B,ps.S,ps.H] >= 0, container=Array) 
-    @variable(m, yS[ms.I,ps.S,ps.H] >= 0, container=Array) 
-    @variable(m, x1[ms.I,xr], container=Array) 
+    @variable(m, ϕ[ms.I,cr], container=Array) # operational cost dependent on uncertain cost cᵢ
+    @variable(m, c0[ms.I], container=Array) # operational cost independent of uncertain costs c
+    @variable(m, yG[ms.I,ps.G,ps.S,ps.H] >= 0, container=Array) # generation level of conventional generation
+    @variable(m, yI[ms.I,ps.B,ps.S,ps.H] >= 0, container=Array) # charging power of storage generation 
+    @variable(m, yO[ms.I,ps.B,ps.S,ps.H] >= 0, container=Array) # discharging power of storage generation
+    @variable(m, yL[ms.I,ps.B,ps.S,ps.H] >= 0, container=Array) # energy level of storage generation
+    @variable(m, yS[ms.I,ps.S,ps.H] >= 0, container=Array) # load shedding
+    @variable(m, x1[ms.I,xr], container=Array) # values of rhs parameters in the subproblem (eg, capacity)
     # */ ----------------------------------------------------------- /* #
     
     # */ -- obj function ------------------------------------------- /* #
-    @objective(m, Min, f + mp.κ*sum(mp.π[i]*β[i] for i in ms.I) )
+    @objective(m, Min, f + mp.κ*sum(mp.π[i]*β[i] for i in ms.I) ) # investment plus operational cost (10⁶£)
     # */ ----------------------------------------------------------- /* #
     
     # */ -- master constraints ------------------------------------- /* #
-    @constraint(m, cm01, f >= exp10(-6)*sum(mp.π0[i0]*sum(mp.ci[p,i0]*x0[p,i0] for p in ms.P) for i0 in ms.I0) + exp10(-6)*mp.κ*sum(mp.π[i]*sum(mp.cf[p]*x[p,i] for p in ms.P) for i in ms.I) )
-    @constraint(m, cm02[p=ms.P,i=ms.I], x[p,i] == mp.xh[p,i] + sum(x0[p,i0] for i0 in mp.map[i]) )
-    @constraint(m, cm03[p=ms.P,i=ms.I], x[p,i] >= .0 )
-    @constraint(m, cm04[p=ms.P,i=ms.I], x[p,i] <= mp.xm[p] )
+    @constraint(m, cm01, f >= exp10(-6)*sum(mp.π0[i0]*sum(mp.ci[p,i0]*x0[p,i0] for p in ms.P) for i0 in ms.I0) + exp10(-6)*mp.κ*sum(mp.π[i]*sum(mp.cf[p]*x[p,i] for p in ms.P) for i in ms.I) ) # compute investment-only cost
+    @constraint(m, cm02[p=ms.P,i=ms.I], x[p,i] == mp.xh[p,i] + sum(x0[p,i0] for i0 in mp.map[i]) ) # compute accumulated capacity at node i
+    @constraint(m, cm03[p=ms.P,i=ms.I], x[p,i] >= .0 ) # minimum accumulated capacity 
+    @constraint(m, cm04[p=ms.P,i=ms.I], x[p,i] <= mp.xm[p] ) # maximum accumulated capacity 
     for i in ms.I for j in 1:unc.nh
-        fix(x[unc.nx0+j,i],unc.h[i,j];force=true)
+        fix(x[unc.nx0+j,i],unc.h[i,j];force=true) # set rhs paramters to dependent on subproblem i (eg, CO₂ budget parameter)
     end end
     # */ -- subproblems constraints -------------------------------- /* #
-    @constraint(m, cs00[i=ms.I], β[i] >= c0[i] + unc.c[i,1]*ϕ[i,1] + unc.c[i,2]*ϕ[i,2])
-    @constraint(m, cs01[i=ms.I], c0[i] == exp10(-6)*sum(sum(sum((pp.cvg[g]+pp.cfg[g]/pp.ηg[g])*yG[i,g,s,h] for g in ps.G0) + pp.cvg[ps.gn]*yG[i,ps.gn,s,h] + pp.cs*yS[i,s,h] for h in ps.H)*pp.α for s in ps.S))
-    @constraint(m, cs02[i=ms.I], ϕ[i,1] == exp10(-6)*sum(sum(sum(pp.eg[g]/pp.ηg[g]*yG[i,g,s,h] for g in ps.G) for h in ps.H)*pp.α for s in ps.S))
-    @constraint(m, cs03[i=ms.I], ϕ[i,2] == exp10(-6)*sum(sum(1/pp.ηg[ps.gn]*yG[i,ps.gn,s,h] for h in ps.H)*pp.α for s in ps.S))
-    @constraint(m, cs04[i=ms.I,b=ps.B,s=ps.S,h=ps.H], yL[i,b,s,h] - yL[i,b,s,circ(h,ps.H)] == pp.ηb[b]*yI[i,b,s,h] - yO[i,b,s,h])
-    @constraint(m, cs05[i=ms.I,g=ps.G,s=ps.S,h=ps.H], yG[i,g,s,h] - yG[i,g,s,circ(h,ps.H)] <= pp.rg[g]*x1[i,g]) 
-    @constraint(m, cs06[i=ms.I,g=ps.G,s=ps.S,h=ps.H], yG[i,g,s,circ(h,ps.H)] - yG[i,g,s,h] <= pp.rg[g]*x1[i,g]) 
-    @constraint(m, cs07[i=ms.I,g=ps.G,s=ps.S,h=ps.H], yG[i,g,s,h] <= x1[i,g]) 
-    @constraint(m, cs08[i=ms.I,b=ps.B,s=ps.S,h=ps.H], yI[i,b,s,h] <= pp.pb[b]*x1[i,b+ps.b0])
-    @constraint(m, cs09[i=ms.I,b=ps.B,s=ps.S,h=ps.H], yO[i,b,s,h] <= pp.pb[b]*x1[i,b+ps.b0])
-    @constraint(m, cs10[i=ms.I,b=ps.B,s=ps.S,h=ps.H], yL[i,b,s,h] <= x1[i,b]) 
-    @constraint(m, cs11[i=ms.I], sum(yG[i,g,s,h]*pp.eg[g]/pp.ηg[g] for g in ps.G for s in ps.S for h in ps.H) <= pp.lco*x1[i,unc.nx0+1]) 
-    @constraint(m, cs12[i=ms.I,s=ps.S,h=ps.H], sum(yG[i,g,s,h] for g in ps.G) + sum(yO[i,b,s,h]-yI[i,b,s,h] for b in ps.B) + yS[i,s,h] >= -x1[i,unc.nx0+2]*pp.pd[s,h] - sum(pp.pr[r,s,h]*x1[i,r+ps.r0] for r in ps.R))
-    @constraint(m, cs13[i=ms.I,n=1:unc.nx0], x1[i,n]*exp10(-3) == x[n,i])
-    @constraint(m, cs14[i=ms.I,n=1:unc.nh ], x1[i,unc.nx0+n]   == x[unc.nx0+n,i])
+    @constraint(m, cs00[i=ms.I], β[i] >= c0[i] + unc.c[i,1]*ϕ[i,1] + unc.c[i,2]*ϕ[i,2]) # compute generation cost (10⁶£) of subproblem i
+    @constraint(m, cs01[i=ms.I], c0[i] == exp10(-6)*sum(sum(sum((pp.cvg[g]+pp.cfg[g]/pp.ηg[g])*yG[i,g,s,h] for g in ps.G0) + pp.cvg[ps.gn]*yG[i,ps.gn,s,h] + pp.cs*yS[i,s,h] for h in ps.H)*pp.α for s in ps.S)) # compute operational cost independent of uncertain costs c 
+    @constraint(m, cs02[i=ms.I], ϕ[i,1] == exp10(-6)*sum(sum(sum(pp.eg[g]/pp.ηg[g]*yG[i,g,s,h] for g in ps.G) for h in ps.H)*pp.α for s in ps.S)) # compute cost dependent on CO₂ emission cost
+    @constraint(m, cs03[i=ms.I], ϕ[i,2] == exp10(-6)*sum(sum(1/pp.ηg[ps.gn]*yG[i,ps.gn,s,h] for h in ps.H)*pp.α for s in ps.S)) # compute cost dependent on nuclear fuel cost
+    @constraint(m, cs04[i=ms.I,b=ps.B,s=ps.S,h=ps.H], yL[i,b,s,h] - yL[i,b,s,circ(h,ps.H)] == pp.ηb[b]*yI[i,b,s,h] - yO[i,b,s,h]) # storage energy balance
+    @constraint(m, cs05[i=ms.I,g=ps.G,s=ps.S,h=ps.H], yG[i,g,s,h] - yG[i,g,s,circ(h,ps.H)] <= pp.rg[g]*x1[i,g]) # upward ramping limitation on conventional generation
+    @constraint(m, cs06[i=ms.I,g=ps.G,s=ps.S,h=ps.H], yG[i,g,s,circ(h,ps.H)] - yG[i,g,s,h] <= pp.rg[g]*x1[i,g]) # downward ramping limitation on conventional generation
+    @constraint(m, cs07[i=ms.I,g=ps.G,s=ps.S,h=ps.H], yG[i,g,s,h] <= x1[i,g]) # maximum capacity limitation on conventional generation
+    @constraint(m, cs08[i=ms.I,b=ps.B,s=ps.S,h=ps.H], yI[i,b,s,h] <= pp.pb[b]*x1[i,b+ps.b0]) # maximum capacity limitation on storage charging power
+    @constraint(m, cs09[i=ms.I,b=ps.B,s=ps.S,h=ps.H], yO[i,b,s,h] <= pp.pb[b]*x1[i,b+ps.b0]) # maximum capacity limitation on storage discharging power
+    @constraint(m, cs10[i=ms.I,b=ps.B,s=ps.S,h=ps.H], yL[i,b,s,h] <= x1[i,b+ps.b0]) # maximum capacity limitation on storage energy level
+    @constraint(m, cs11[i=ms.I], sum(yG[i,g,s,h]*pp.eg[g]/pp.ηg[g] for g in ps.G for s in ps.S for h in ps.H) <= pp.lco*x1[i,unc.nx0+1]) # CO₂ emission budget
+    @constraint(m, cs12[i=ms.I,s=ps.S,h=ps.H], sum(yG[i,g,s,h] for g in ps.G) + sum(yO[i,b,s,h]-yI[i,b,s,h] for b in ps.B) + yS[i,s,h] >= -x1[i,unc.nx0+2]*pp.pd[s,h] - sum(pp.pr[r,s,h]*x1[i,r+ps.r0] for r in ps.R)) # energy demand
+    @constraint(m, cs13[i=ms.I,n=1:unc.nx0], x1[i,n]*exp10(-3) == x[n,i]) # generation to level of decisions {xᵢ, ∀i} set by the master problem
+    @constraint(m, cs14[i=ms.I,n=1:unc.nh ], x1[i,unc.nx0+n]   == x[unc.nx0+n,i]) # rhs uncertain parameters (energy level and CO₂ budget) specific to problem i
     # */ ----------------------------------------------------------- /* #
     
     return m
@@ -78,23 +78,23 @@ function RMP!(m::JuMP.Model,ms::ms_type,mp::mp_type,unc::u_type)::JuMP.Model
     
     xr=1:unc.nx
     # */ -- variables ---------------------------------------------- /* #
-    @variable(m, f, container=Array)
-    @variable(m, x0[ms.P,ms.I0] >= .0, container=Array)
-    @variable(m, x[xr,ms.I], container=Array)
-    @variable(m, β[ms.I] >= .0, container=Array)
+    @variable(m, f, container=Array) # investment-only cost
+    @variable(m, x0[ms.P,ms.I0] >= .0, container=Array) # newly installed capacity
+    @variable(m, x[xr,ms.I], container=Array) # rhs paramters for operational subproblem (eg, accumulated capacity)
+    @variable(m, β[ms.I] >= .0, container=Array) # operational cost of node i
     # */ ----------------------------------------------------------- /* #
     
     # */ -- obj function ------------------------------------------- /* #
-    @objective(m, Min, f + mp.κ*sum(mp.π[i]*β[i] for i in ms.I) )
+    @objective(m, Min, f + mp.κ*sum(mp.π[i]*β[i] for i in ms.I) ) # investment plus operational cost (10⁶£)
     # */ ----------------------------------------------------------- /* #
     
     # */ -- constraints -------------------------------------------- /* #
-    @constraint(m, c01, f >= exp10(-6)*sum(mp.π0[i0]*sum(mp.ci[p,i0]*x0[p,i0] for p in ms.P) for i0 in ms.I0) + exp10(-6)*mp.κ*sum(mp.π[i]*sum(mp.cf[p]*x[p,i] for p in ms.P) for i in ms.I) )
-    @constraint(m, c02[p=ms.P,i=ms.I], x[p,i] == mp.xh[p,i] + sum(x0[p,i0] for i0 in mp.map[i]) )
-    @constraint(m, c03[p=ms.P,i=ms.I], x[p,i] >= .0 )
-    @constraint(m, c04[p=ms.P,i=ms.I], x[p,i] <= mp.xm[p] )
+    @constraint(m, c01, f >= exp10(-6)*sum(mp.π0[i0]*sum(mp.ci[p,i0]*x0[p,i0] for p in ms.P) for i0 in ms.I0) + exp10(-6)*mp.κ*sum(mp.π[i]*sum(mp.cf[p]*x[p,i] for p in ms.P) for i in ms.I) ) # compute investment-only cost
+    @constraint(m, c02[p=ms.P,i=ms.I], x[p,i] == mp.xh[p,i] + sum(x0[p,i0] for i0 in mp.map[i]) ) # compute accumulated capacity at node i
+    @constraint(m, c03[p=ms.P,i=ms.I], x[p,i] >= .0 ) # minimum accumulated capacity 
+    @constraint(m, c04[p=ms.P,i=ms.I], x[p,i] <= mp.xm[p] ) # maximum accumulated capacity 
     for i in ms.I for j in 1:unc.nh
-        fix(x[unc.nx0+j,i],unc.h[i,j];force=true)
+        fix(x[unc.nx0+j,i],unc.h[i,j];force=true) # set rhs paramters to dependent on subproblem i (eg, CO₂ budget parameter)
     end end
     # */ ----------------------------------------------------------- /* #
     optimize!(m)
@@ -113,36 +113,36 @@ function SP!(m::JuMP.Model,ps::ps_type,pp::pp_type,unc::u_type)::JuMP.Model
     #       x = xf :(λ)
     
     # */ -- variables ---------------------------------------------- /* #
-    @variable(m, ϕ[1:unc.nc], container=Array)
-    @variable(m, c0, container=Array) 
-    @variable(m, yG[ps.G,ps.S,ps.H] >= 0, container=Array)
-    @variable(m, yI[ps.B,ps.S,ps.H] >= 0, container=Array) 
-    @variable(m, yO[ps.B,ps.S,ps.H] >= 0, container=Array) 
-    @variable(m, yL[ps.B,ps.S,ps.H] >= 0, container=Array) 
-    @variable(m, yS[ps.S,ps.H] >= 0, container=Array) 
-    @variable(m, x0[1:unc.nx], container=Array) 
-    @variable(m, x[1:unc.nx], container=Array) 
+    @variable(m, ϕ[1:unc.nc], container=Array) # operational cost dependent on uncertain cost cᵢ
+    @variable(m, c0, container=Array) # operational cost independent of uncertain costs c
+    @variable(m, yG[ps.G,ps.S,ps.H] >= 0, container=Array) # generation level of conventional generation
+    @variable(m, yI[ps.B,ps.S,ps.H] >= 0, container=Array) # charging power of storage generation
+    @variable(m, yO[ps.B,ps.S,ps.H] >= 0, container=Array) # discharging power of storage generation
+    @variable(m, yL[ps.B,ps.S,ps.H] >= 0, container=Array) # energy level of storage generation
+    @variable(m, yS[ps.S,ps.H] >= 0, container=Array) # load shedding
+    @variable(m, x0[1:unc.nx], container=Array) # values of rhs parameters in the subproblem (eg, capacity)
+    @variable(m, x[1:unc.nx], container=Array) # values of decisions {xᵢ, ∀i} set by the master problem
     # */ ----------------------------------------------------------- /* #
     
     # */ -- obj function ------------------------------------------- /* #
-    @objective(m, Min, c0 )
+    @objective(m, Min, c0 ) # generation cost (10⁶£)
     # */ ----------------------------------------------------------- /* #
     
     # */ -- constraints -------------------------------------------- /* #
-    @constraint(m, c01, c0 == exp10(-6)*sum(sum(sum((pp.cvg[g]+pp.cfg[g]/pp.ηg[g])*yG[g,s,h] for g in ps.G0) + pp.cvg[ps.gn]*yG[ps.gn,s,h] + pp.cs*yS[s,h] for h in ps.H)*pp.α for s in ps.S))
-    @constraint(m, c02, ϕ[1] == exp10(-6)*sum(sum(sum(pp.eg[g]/pp.ηg[g]*yG[g,s,h] for g in ps.G) for h in ps.H)*pp.α for s in ps.S))
-    @constraint(m, c03, ϕ[2] == exp10(-6)*sum(sum(1/pp.ηg[ps.gn]*yG[ps.gn,s,h] for h in ps.H)*pp.α for s in ps.S))
-    @constraint(m, c04[b=ps.B,s=ps.S,h=ps.H], yL[b,s,h] - yL[b,s,circ(h,ps.H)] == pp.ηb[b]*yI[b,s,h] - yO[b,s,h])
-    @constraint(m, c05[g=ps.G,s=ps.S,h=ps.H], yG[g,s,h] - yG[g,s,circ(h,ps.H)] <= pp.rg[g]*x0[g]) 
-    @constraint(m, c06[g=ps.G,s=ps.S,h=ps.H], yG[g,s,circ(h,ps.H)] - yG[g,s,h] <= pp.rg[g]*x0[g]) 
-    @constraint(m, c07[g=ps.G,s=ps.S,h=ps.H], yG[g,s,h] <= x0[g]) 
-    @constraint(m, c08[b=ps.B,s=ps.S,h=ps.H], yI[b,s,h] <= pp.pb[b]*x0[b+ps.b0])
-    @constraint(m, c09[b=ps.B,s=ps.S,h=ps.H], yO[b,s,h] <= pp.pb[b]*x0[b+ps.b0])
-    @constraint(m, c10[b=ps.B,s=ps.S,h=ps.H], yL[b,s,h] <= x0[b]) 
-    @constraint(m, c11, sum(yG[g,s,h]*pp.eg[g]/pp.ηg[g] for g in ps.G for s in ps.S for h in ps.H) <= pp.lco*x0[unc.nx0+1]) 
-    @constraint(m, c12[s=ps.S,h=ps.H], sum(yG[g,s,h] for g in ps.G) + sum(yO[b,s,h]-yI[b,s,h] for b in ps.B) + yS[s,h] >= -x0[unc.nx0+2]*pp.pd[s,h] - sum(pp.pr[r,s,h]*x0[r+ps.r0] for r in ps.R))
-    @constraint(m, c13[n=1:unc.nx0], x0[n]*exp10(-3) == x[n])
-    @constraint(m, c14[n=1:unc.nh ], x0[unc.nx0+n]   == x[unc.nx0+n])
+    @constraint(m, c01, c0 == exp10(-6)*sum(sum(sum((pp.cvg[g]+pp.cfg[g]/pp.ηg[g])*yG[g,s,h] for g in ps.G0) + pp.cvg[ps.gn]*yG[ps.gn,s,h] + pp.cs*yS[s,h] for h in ps.H)*pp.α for s in ps.S)) # compute operational cost independent of uncertain costs c 
+    @constraint(m, c02, ϕ[1] == exp10(-6)*sum(sum(sum(pp.eg[g]/pp.ηg[g]*yG[g,s,h] for g in ps.G) for h in ps.H)*pp.α for s in ps.S)) # compute cost dependent on CO₂ emission cost
+    @constraint(m, c03, ϕ[2] == exp10(-6)*sum(sum(1/pp.ηg[ps.gn]*yG[ps.gn,s,h] for h in ps.H)*pp.α for s in ps.S)) # compute cost dependent on nuclear fuel cost
+    @constraint(m, c04[b=ps.B,s=ps.S,h=ps.H], yL[b,s,h] - yL[b,s,circ(h,ps.H)] == pp.ηb[b]*yI[b,s,h] - yO[b,s,h]) # storage energy balance
+    @constraint(m, c05[g=ps.G,s=ps.S,h=ps.H], yG[g,s,h] - yG[g,s,circ(h,ps.H)] <= pp.rg[g]*x0[g]) # upward ramping limitation on conventional generation
+    @constraint(m, c06[g=ps.G,s=ps.S,h=ps.H], yG[g,s,circ(h,ps.H)] - yG[g,s,h] <= pp.rg[g]*x0[g]) # downward ramping limitation on conventional generation
+    @constraint(m, c07[g=ps.G,s=ps.S,h=ps.H], yG[g,s,h] <= x0[g]) # maximum capacity limitation on conventional generation
+    @constraint(m, c08[b=ps.B,s=ps.S,h=ps.H], yI[b,s,h] <= pp.pb[b]*x0[b+ps.b0]) # maximum capacity limitation on storage charging power
+    @constraint(m, c09[b=ps.B,s=ps.S,h=ps.H], yO[b,s,h] <= pp.pb[b]*x0[b+ps.b0]) # maximum capacity limitation on storage discharging power
+    @constraint(m, c10[b=ps.B,s=ps.S,h=ps.H], yL[b,s,h] <= x0[b+ps.b0]) # maximum capacity limitation on storage energy level
+    @constraint(m, c11, sum(yG[g,s,h]*pp.eg[g]/pp.ηg[g] for g in ps.G for s in ps.S for h in ps.H) <= pp.lco*x0[unc.nx0+1]) # CO₂ emission budget
+    @constraint(m, c12[s=ps.S,h=ps.H], sum(yG[g,s,h] for g in ps.G) + sum(yO[b,s,h]-yI[b,s,h] for b in ps.B) + yS[s,h] >= -x0[unc.nx0+2]*pp.pd[s,h] - sum(pp.pr[r,s,h]*x0[r+ps.r0] for r in ps.R)) # energy demand
+    @constraint(m, c13[n=1:unc.nx0], x0[n]*exp10(-3) == x[n]) # generation to level of decisions {xᵢ, ∀i} set by the master problem
+    @constraint(m, c14[n=1:unc.nh ], x0[unc.nx0+n]   == x[unc.nx0+n]) # rhs uncertain parameters (energy level and CO₂ budget) specific to problem i
     # */ ----------------------------------------------------------- /* #
     optimize!(m)
     
@@ -467,6 +467,13 @@ function gen_M__type(d::d__type)::M__type
     return M__type(0,θ,λ,ϕ,x,c)
 end
 
+function gen_Q__type(d::d__type)::Array{Q__type,1}
+
+    # function to generate Q__type (structure of extended exact solutions stored) for given d__type (structure of subproblem data)
+
+    return Array{Q__type,1}(undef,0)
+end
+
 function gen_t1_type(d::d__type)::t1_type
 
     # function to generate t1_type (structure of temporary data, algorithm 1 ) for given d__type (structure of subproblem data)
@@ -537,9 +544,10 @@ function gen_S2_type(D::D__type)::S2_type
     l = gen_Lb_type(d) # generate O__type (structure of oracle for lower bound)
     u = gen_Ub_type(d) # generate O__type (structure of oracle for upper bound)
     m = gen_M__type(d) # generate M__type (structure of exact solutions stored)
+    q = gen_Q__type(d) # generate Q__type (structure of extended exact solutions stored)
     t = gen_t2_type(d) # generate t2_type (structure of temporary data) 
 
-    return S2_type(e,l,u,m,d,t)
+    return S2_type(e,l,u,m,q,d,t)
 end
 
 # */ --------------------------------------------------------------------------------------------- /* #
@@ -633,6 +641,24 @@ function solv_exact!(s::S2_type)::S2_type
     s.temp.ϕu[:,s.temp.i] .= value.(s.ex.m[:ϕ]) # store subgradient ϕᵢ wrt cᵢ
 
     return s
+end
+
+function extended_sol!(s::S2_type)::S2_type
+
+    # function to store new extended exact solution to S2_type.q (extended exact solutions stored)
+    # for given S2_type (Benders subproblem) -> algorithm 2 (Adapt_Bend)
+
+    ϕ  = value.(s.ex.m[:ϕ] ) # extract the operational cost dependent on uncertain cost cᵢ
+    c0 = value.(s.ex.m[:c0]) # extract the operational cost independent of uncertain costs c
+    yG = value.(s.ex.m[:yG]) # extract the generation level of conventional generation
+    yI = value.(s.ex.m[:yI]) # extract the charging power of storage generation
+    yO = value.(s.ex.m[:yI]) # extract the discharging power of storage generation
+    yL = value.(s.ex.m[:yL]) # extract the energy level of storage generation
+    yS = value.(s.ex.m[:yS]) # extract the load shedding
+    x0 = value.(s.ex.m[:x0]) # extract the values of rhs parameters in the subproblem (eg, capacity)
+    push!(s.q,Q__type(ϕ,c0,yG,yI,yO,yL,yS,x0)) # add new extended exact solution
+
+    return s 
 end
 
 function update_m_!(s::S2_type)::S2_type
@@ -838,6 +864,7 @@ function step_c!(b::B2_type,s::S2_type)::Tuple{B2_type,S2_type}
     for s.temp.i in b.temp.Ie
         solv_exact!(s) # solve subproblem i exactly and store solutions
         update_s!(s) # send the new exact solution to the adaptive oracles
+        extended_sol!(s) # store the new extended exact solution
     end
 
     return b,s
