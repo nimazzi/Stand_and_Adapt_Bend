@@ -1,25 +1,29 @@
 module O_structs
 
-export u_type,ms_type,mp_type,ps_type,pp_type
+export u_type                     # structure of uncertainty parameters
+export ms_type                    # structure of master problem sets
+export mp_type                    # structure of master problem parameters
+export ps_type                    # structure of subproblem sets
+export pp_type                    # structure of subproblem parameters
 
 mutable struct u_type
-      ni::Int64                  # number of subproblems
-      nx::Int64                  # size of vector x
-     nx0::Int64                  # size of master vector decisions x0
-      nh::Int64                  # size of vector h
-      nc::Int64                  # size of vector c
-       h::Array{Float64,2}       # array of vector h
-       c::Array{Float64,2}       # array of vector c
+       ni::Int64                  # number of subproblems
+       nx::Int64                  # size of vector x
+      nx0::Int64                  # size of master vector decisions x0
+       nh::Int64                  # size of vector h
+       nc::Int64                  # size of vector c
+        h::Array{Float64,2}       # array of vector h
+        c::Array{Float64,2}       # array of vector c
 end
 
-mutable struct ms_type 
+mutable struct ms_type           
        P::UnitRange{Int64}       # set of technologies
       I0::UnitRange{Int64}       # set of "investment" nodes
        I::UnitRange{Int64}       # set of "operational" nodes
 end
 
-mutable struct mp_type 
-        κ::Float64                # years of operational problem
+mutable struct mp_type            
+       κ::Float64                 # years of operational problem (yr)
        xh::Array{Float64,2}       # historical installed capacity (GW)
        xm::Array{Float64,1}       # maximum accumulated capacity (GW)
        ci::Array{Float64,2}       # investment cost (£/GW)
@@ -54,9 +58,9 @@ mutable struct pp_type
        pd::Array{Float64,2}       # energy demand (MW)
        νd::Float64                # scaling demand (-)
        cs::Float64                # shedding demand cost (£/MW)
-       co::Float64                # CO2 cost (conv. tech.) (£/tCO₂)
-      lco::Float64                # co2 yearly limit (tCO₂)
-      ρco::Float64                # scaling co2 limit (-)
+       co::Float64                # CO₂ cost (conv. tech.) (£/tCO₂)
+      lco::Float64                # CO₂ yearly limit (tCO₂)
+      ρco::Float64                # scaling CO₂ limit (-)
         α::Float64                # seasonal weight (-)
 end
 
